@@ -2,7 +2,7 @@ Summary:	Graphical network viewer modeled after etherman
 Name:		etherape
 Version:	0.9.7
 Release: 	%mkrel 1
-License:	GPL
+License:	GPLv2+
 Group:		Monitoring
 URL:		http://etherape.sourceforge.net/
 Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
@@ -11,8 +11,7 @@ Requires:	usermode-consoleonly
 BuildRequires:	libglade2.0-devel
 BuildRequires:	libpcap-devel
 BuildRequires:	libgnomeui2-devel
-BuildRequires:	autoconf2.5
-BuildRequires:	automake1.7
+BuildRequires:	autoconf
 BuildRequires:	scrollkeeper
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
@@ -30,8 +29,7 @@ from a file as well as live from the network.
 %patch0 -p1 -b .olddesktop
 
 %build
-export WANT_AUTOCONF_2_5=1
-libtoolize --copy --force; aclocal-1.7 -I m4 ; autoconf; automake-1.7 --add-missing --copy
+autoreconf
 %configure2_5x
 make
 
@@ -42,23 +40,12 @@ rm -rf %{buildroot}
 mv %{buildroot}/%{_sbindir}/etherape %{buildroot}/%{_sbindir}/etherape.real
 ln -sf %{_bindir}/consolehelper %{buildroot}/%{_sbindir}/etherape
 
-# menu
-install -d %{buildroot}/%{_menudir}
-cat << EOF > %{buildroot}/%{_menudir}/%{name}
-?package(%{name}): \
-  command="%{_sbindir}/etherape" \
-  needs="x11" \
-  section="System/Monitoring" \
-  title="Etherape" \
-  longtitle="Graphical network viewer" \
-  icon="monitoring_section.png" \
-  xdg=true
-EOF
+perl -pi -e 's,%{name}.png,%{name},g' $RPM_BUILD_ROOT%{_datadir}/applications/*
 
 desktop-file-install --vendor="" \
   --remove-category="Application" \
-  --add-category="System;Monitor" \
-  --add-category="X-MandrivaLinux-System-Monitoring" \
+  --add-category="System" \
+  --add-category="Monitor" \
   --dir $RPM_BUILD_ROOT%{_datadir}/applications $RPM_BUILD_ROOT%{_datadir}/applications/*
 
 # pam.d
@@ -67,11 +54,7 @@ cat > %{buildroot}%{_sysconfdir}/pam.d/%{name} << _EOF_
 #%PAM-1.0
 auth       sufficient	pam_rootok.so
 auth       sufficient	pam_timestamp.so
-%if %mdkversion >= 200700
 auth       required     system-auth
-%else
-auth       required     pam_stack.so service=system-auth
-%endif
 session    required	pam_permit.so
 session    optional	pam_xauth.so
 session    optional	pam_timestamp.so
@@ -89,6 +72,12 @@ _EOF_
 
 # install desktop file to new location
 install -D -m 644 etherape.desktop %{buildroot}%{_datadir}/applications/etherape.desktop
+
+# fd.o icons
+mkdir -p %{buildroot}%{_iconsdir}/hicolor/{16x16,32x32,48x48}/apps
+install -m 644 %{name}.png %{buildroot}%{_iconsdir}/hicolor/48x48/apps/%{name}.png
+convert -scale 32 %{name}.png %{buildroot}%{_iconsdir}/hicolor/32x32/apps/%{name}.png
+convert -scale 16 %{name}.png %{buildroot}%{_iconsdir}/hicolor/16x16/apps/%{name}.png
 
 # remove files not bundled
 rm -rf %{buildroot}%{_datadir}/gnome
@@ -112,7 +101,7 @@ rm -fr %{buildroot}
 %config(noreplace) %{_sysconfdir}/security/console.apps/etherape
 %{_sbindir}/*
 %{_mandir}/man1/*
-%{_menudir}/*
+%{_iconsdir}/hicolor/*/apps/%{name}.png
 %{_datadir}/%{name}
 %{_datadir}/pixmaps/*
 %{_datadir}/applications/*.desktop
