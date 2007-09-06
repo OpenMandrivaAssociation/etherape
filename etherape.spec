@@ -13,6 +13,7 @@ BuildRequires:	libpcap-devel
 BuildRequires:	libgnomeui2-devel
 BuildRequires:	autoconf
 BuildRequires:	scrollkeeper
+BuildRequires:	desktop-file-utils
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
