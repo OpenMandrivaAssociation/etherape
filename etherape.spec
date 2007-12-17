@@ -15,7 +15,6 @@ BuildRequires:	autoconf
 BuildRequires:	scrollkeeper
 BuildRequires:	desktop-file-utils
 BuildRequires:	ImageMagick
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 Etherape is a graphical network monitor for Unix modeled after
