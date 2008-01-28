@@ -1,7 +1,7 @@
 Summary:	Graphical network viewer modeled after etherman
 Name:		etherape
 Version:	0.9.7
-Release: 	%mkrel 1
+Release: 	%mkrel 2
 License:	GPLv2+
 Group:		Monitoring
 URL:		http://etherape.sourceforge.net/
@@ -55,12 +55,12 @@ install -m 755 -d %{buildroot}%{_sysconfdir}/pam.d
 cat > %{buildroot}%{_sysconfdir}/pam.d/%{name} << _EOF_
 #%PAM-1.0
 auth       sufficient	pam_rootok.so
+auth       required     pam_console.so
 auth       sufficient	pam_timestamp.so
-auth       required     system-auth
+auth       include	system-auth
 session    required	pam_permit.so
 session    optional	pam_xauth.so
 session    optional	pam_timestamp.so
-account    required	pam_permit.so
 _EOF_
 
 # console.apps
@@ -87,10 +87,10 @@ rm -rf %{buildroot}%{_datadir}/gnome
 %find_lang %{name}
 
 %post
-%update_menus
+%{update_menus}
 
 %postun
-%clean_menus
+%{clean_menus}
 
 %clean
 rm -fr %{buildroot}
