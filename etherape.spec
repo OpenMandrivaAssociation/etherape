@@ -1,7 +1,7 @@
 Summary:	Graphical network viewer modeled after etherman
 Name:		etherape
 Version:	0.9.7
-Release: 	%mkrel 2
+Release: 	%mkrel 3
 License:	GPLv2+
 Group:		Monitoring
 URL:		http://etherape.sourceforge.net/
@@ -58,7 +58,7 @@ auth       sufficient	pam_rootok.so
 auth       required     pam_console.so
 auth       sufficient	pam_timestamp.so
 auth       include	system-auth
-session    required	pam_permit.so
+account    required	pam_permit.so
 session    optional	pam_xauth.so
 session    optional	pam_timestamp.so
 _EOF_
