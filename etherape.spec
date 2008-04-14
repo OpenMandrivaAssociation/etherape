@@ -38,6 +38,7 @@ make
 %install
 rm -rf %{buildroot}
 %makeinstall_std bindir=%{_sbindir}
+mkdir -p %{buildroot}%{_bindir}
 
 mv %{buildroot}/%{_sbindir}/etherape %{buildroot}/%{_sbindir}/etherape.real
 ln -sf %{_bindir}/consolehelper %{buildroot}/%{_bindir}/etherape
