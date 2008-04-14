@@ -1,7 +1,7 @@
 Summary:	Graphical network viewer modeled after etherman
 Name:		etherape
 Version:	0.9.7
-Release: 	%mkrel 3
+Release: 	%mkrel 4
 License:	GPLv2+
 Group:		Monitoring
 URL:		http://etherape.sourceforge.net/
@@ -40,15 +40,15 @@ rm -rf %{buildroot}
 %makeinstall_std bindir=%{_sbindir}
 
 mv %{buildroot}/%{_sbindir}/etherape %{buildroot}/%{_sbindir}/etherape.real
-ln -sf %{_bindir}/consolehelper %{buildroot}/%{_sbindir}/etherape
+ln -sf %{_bindir}/consolehelper %{buildroot}/%{_bindir}/etherape
 
-perl -pi -e 's,%{name}.png,%{name},g' $RPM_BUILD_ROOT%{_datadir}/applications/*
+perl -pi -e 's,%{name}.png,%{name},g' %{buildroot}%{_datadir}/applications/*
 
 desktop-file-install --vendor="" \
   --remove-category="Application" \
   --add-category="System" \
   --add-category="Monitor" \
-  --dir $RPM_BUILD_ROOT%{_datadir}/applications $RPM_BUILD_ROOT%{_datadir}/applications/*
+  --dir %{buildroot}%{_datadir}/applications %{buildroot}%{_datadir}/applications/*
 
 # pam.d
 install -m 755 -d %{buildroot}%{_sysconfdir}/pam.d
@@ -88,9 +88,11 @@ rm -rf %{buildroot}%{_datadir}/gnome
 
 %post
 %{update_menus}
+%{update_icon_cache hicolor}
 
 %postun
 %{clean_menus}
+%{clean_icon_cache hicolor}
 
 %clean
 rm -fr %{buildroot}
@@ -101,6 +103,7 @@ rm -fr %{buildroot}
 %config(noreplace) %{_sysconfdir}/etherape
 %config(noreplace) %{_sysconfdir}/pam.d/etherape
 %config(noreplace) %{_sysconfdir}/security/console.apps/etherape
+%{_bindir}/*
 %{_sbindir}/*
 %{_mandir}/man1/*
 %{_iconsdir}/hicolor/*/apps/%{name}.png
