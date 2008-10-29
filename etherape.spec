@@ -1,7 +1,7 @@
 Summary:	Graphical network viewer modeled after etherman
 Name:		etherape
 Version:	0.9.7
-Release: 	%mkrel 5
+Release: 	%mkrel 6
 License:	GPLv2+
 Group:		Monitoring
 URL:		http://etherape.sourceforge.net/
@@ -15,7 +15,7 @@ BuildRequires:	autoconf
 BuildRequires:	scrollkeeper
 BuildRequires:	desktop-file-utils
 BuildRequires:	ImageMagick
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 Etherape is a graphical network monitor for Unix modeled after
