@@ -14,7 +14,7 @@ BuildRequires:	libgnomeui2-devel
 BuildRequires:	autoconf
 BuildRequires:	scrollkeeper
 BuildRequires:	desktop-file-utils
-BuildRequires:	ImageMagick
+BuildRequires:	imagemagick
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
