@@ -1,7 +1,7 @@
 Summary:	Graphical network viewer modeled after etherman
 Name:		etherape
 Version:	0.9.7
-Release: 	%mkrel 6
+Release: 	%mkrel 7
 License:	GPLv2+
 Group:		Monitoring
 URL:		http://etherape.sourceforge.net/
