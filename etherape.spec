@@ -1,12 +1,13 @@
 Summary:	Graphical network viewer modeled after etherman
 Name:		etherape
-Version:	0.9.7
-Release: 	%mkrel 7
+Version:	0.9.8
+Release: 	%mkrel 1
 License:	GPLv2+
 Group:		Monitoring
 URL:		http://etherape.sourceforge.net/
-Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
+Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Patch0:		etherape-0.9.5-desktopfile.patch
+Patch1:		etherape-0.9.8-mdv-fix-str-fmt.patch
 Requires:	usermode-consoleonly
 BuildRequires:	libglade2.0-devel
 BuildRequires:	libpcap-devel
@@ -29,6 +30,7 @@ from a file as well as live from the network.
 %prep
 %setup -q
 %patch0 -p1 -b .olddesktop
+%patch1 -p1 -b .strfmt
 
 %build
 autoreconf
