@@ -1,18 +1,16 @@
 Summary:	Graphical network viewer modeled after etherman
 Name:		etherape
-Version:	0.9.8
+Version:	0.9.9
 Release: 	%mkrel 1
 License:	GPLv2+
 Group:		Monitoring
 URL:		http://etherape.sourceforge.net/
 Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
-Patch0:		etherape-0.9.5-desktopfile.patch
-Patch1:		etherape-0.9.8-mdv-fix-str-fmt.patch
 Requires:	usermode-consoleonly
 BuildRequires:	libglade2.0-devel
 BuildRequires:	libpcap-devel
 BuildRequires:	libgnomeui2-devel
-BuildRequires:	autoconf
+BuildRequires:	gnome-doc-utils
 BuildRequires:	scrollkeeper
 BuildRequires:	desktop-file-utils
 BuildRequires:	imagemagick
@@ -29,13 +27,10 @@ from a file as well as live from the network.
 
 %prep
 %setup -q
-%patch0 -p1 -b .olddesktop
-%patch1 -p1 -b .strfmt
 
 %build
-autoreconf
-%configure2_5x
-make
+%configure
+%make
 
 %install
 rm -rf %{buildroot}
@@ -75,9 +70,6 @@ SESSION=true
 FALLBACK=false
 _EOF_
 
-# install desktop file to new location
-install -D -m 644 etherape.desktop %{buildroot}%{_datadir}/applications/etherape.desktop
-
 # fd.o icons
 mkdir -p %{buildroot}%{_iconsdir}/hicolor/{16x16,32x32,48x48}/apps
 install -m 644 %{name}.png %{buildroot}%{_iconsdir}/hicolor/48x48/apps/%{name}.png
@@ -106,7 +98,7 @@ rm -fr %{buildroot}
 
 %files -f %{name}.lang
 %defattr(-,root,root)
-%doc AUTHORS COPYING NEWS README* FAQ
+%doc AUTHORS ChangeLog COPYING NEWS README* FAQ
 %config(noreplace) %{_sysconfdir}/etherape
 %config(noreplace) %{_sysconfdir}/pam.d/etherape
 %config(noreplace) %{_sysconfdir}/security/console.apps/etherape
