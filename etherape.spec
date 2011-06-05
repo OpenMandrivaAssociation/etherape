@@ -29,7 +29,7 @@ from a file as well as live from the network.
 %setup -q
 
 %build
-%configure
+%configure2_5x
 %make
 
 %install
