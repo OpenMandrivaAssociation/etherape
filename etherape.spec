@@ -1,20 +1,19 @@
 Summary:	Graphical network viewer modeled after etherman
 Name:		etherape
 Version:	0.9.12
-Release: 	%mkrel 1
+Release: 	2
 License:	GPLv2+
 Group:		Monitoring
 URL:		http://etherape.sourceforge.net/
 Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Requires:	usermode-consoleonly
-BuildRequires:	libglade2.0-devel
+BuildRequires:	pkgconfig(libglade-2.0)
+BuildRequires:	pkgconfig(libgnomeui-2.0)
+BuildRequires:	pkgconfig(gnome-doc-utils)
 BuildRequires:	libpcap-devel
-BuildRequires:	libgnomeui2-devel
-BuildRequires:	gnome-doc-utils
-BuildRequires:	scrollkeeper
 BuildRequires:	desktop-file-utils
+BuildRequires:	scrollkeeper
 BuildRequires:	imagemagick
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 Etherape is a graphical network monitor for Unix modeled after
@@ -24,7 +23,6 @@ Color coded protocols display. It supports ethernet, ppp and slip
 devices. It can filter traffic to be shown, and can read traffic 
 from a file as well as live from the network. 
 
-
 %prep
 %setup -q
 
@@ -33,7 +31,6 @@ from a file as well as live from the network.
 %make
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std bindir=%{_sbindir}
 mkdir -p %{buildroot}%{_bindir}
 
@@ -81,23 +78,7 @@ rm -rf %{buildroot}%{_datadir}/gnome
 
 %find_lang %{name}
 
-%if %mdkversion < 200900
-%post
-%{update_menus}
-%{update_icon_cache hicolor}
-%endif
-
-%if %mdkversion < 200900
-%postun
-%{clean_menus}
-%{clean_icon_cache hicolor}
-%endif
-
-%clean
-rm -fr %{buildroot}
-
 %files -f %{name}.lang
-%defattr(-,root,root)
 %doc AUTHORS ChangeLog COPYING NEWS README* FAQ
 %config(noreplace) %{_sysconfdir}/etherape
 %config(noreplace) %{_sysconfdir}/pam.d/etherape
