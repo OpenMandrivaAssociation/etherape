@@ -1,12 +1,14 @@
 Summary:	Graphical network viewer modeled after etherman
 Name:		etherape
 Version:	0.9.12
-Release: 	2
+Release: 	3
 License:	GPLv2+
 Group:		Monitoring
 URL:		http://etherape.sourceforge.net/
 Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Requires:	usermode-consoleonly
+Requires:       libbonoboui
+Requires:       libgnomeui2
 BuildRequires:	pkgconfig(libglade-2.0)
 BuildRequires:	pkgconfig(libgnomeui-2.0)
 BuildRequires:	pkgconfig(gnome-doc-utils)
