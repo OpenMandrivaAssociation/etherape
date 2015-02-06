@@ -1,7 +1,7 @@
 Summary:	Graphical network viewer modeled after etherman
 Name:		etherape
 Version:	0.9.12
-Release: 	3
+Release: 	4
 License:	GPLv2+
 Group:		Monitoring
 URL:		http://etherape.sourceforge.net/
