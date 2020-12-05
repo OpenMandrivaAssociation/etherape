@@ -1,21 +1,20 @@
 Summary:	Graphical network viewer modeled after etherman
 Name:		etherape
-Version:	0.9.12
-Release: 	4
+Version:	0.9.19
+Release: 	1
 License:	GPLv2+
 Group:		Monitoring
-URL:		http://etherape.sourceforge.net/
-Source:		http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
-Requires:	usermode-consoleonly
-Requires:       libbonoboui
-Requires:       libgnomeui2
-BuildRequires:	pkgconfig(libglade-2.0)
-BuildRequires:	pkgconfig(libgnomeui-2.0)
-BuildRequires:	pkgconfig(gnome-doc-utils)
-BuildRequires:	libpcap-devel
-BuildRequires:	desktop-file-utils
+URL:		https://etherape.sourceforge.net
+Source0:	https://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+
+BuildRequires:	gnome-doc-utils
+BuildRequires:	pkgconfig(libpcap)
+BuildRequires:	pkgconfig(goocanvas-2.0)
+BuildRequires:	pkgconfig(popt)
 BuildRequires:	scrollkeeper
-BuildRequires:	imagemagick
+BuildRequires:	itstool
+
+Requires:	usermode-consoleonly
 
 %description
 Etherape is a graphical network monitor for Unix modeled after
@@ -29,23 +28,15 @@ from a file as well as live from the network.
 %setup -q
 
 %build
-%configure2_5x
-%make
+%configure
+%make_build
 
 %install
-%makeinstall_std bindir=%{_sbindir}
+%make_install bindir=%{_sbindir}
+
 mkdir -p %{buildroot}%{_bindir}
-
-mv %{buildroot}/%{_sbindir}/etherape %{buildroot}/%{_sbindir}/etherape.real
-ln -sf %{_bindir}/consolehelper %{buildroot}/%{_bindir}/etherape
-
-perl -pi -e 's,%{name}.png,%{name},g' %{buildroot}%{_datadir}/applications/*
-
-desktop-file-install --vendor="" \
-  --remove-category="Application" \
-  --add-category="System" \
-  --add-category="Monitor" \
-  --dir %{buildroot}%{_datadir}/applications %{buildroot}%{_datadir}/applications/*
+mv %{buildroot}/%{_sbindir}/%{name} %{buildroot}/%{_sbindir}/%{name}.real
+ln -sf %{_bindir}/consolehelper %{buildroot}/%{_bindir}/%{name}
 
 # pam.d
 install -m 755 -d %{buildroot}%{_sysconfdir}/pam.d
@@ -64,33 +55,19 @@ _EOF_
 install -m 755 -d %{buildroot}%{_sysconfdir}/security/console.apps
 cat > %{buildroot}%{_sysconfdir}/security/console.apps/%{name} << _EOF_
 USER=root
-PROGRAM=%{_sbindir}/etherape.real
+PROGRAM=%{_sbindir}/%{name}.real
 SESSION=true
 FALLBACK=false
 _EOF_
 
-# fd.o icons
-mkdir -p %{buildroot}%{_iconsdir}/hicolor/{16x16,32x32,48x48}/apps
-install -m 644 %{name}.png %{buildroot}%{_iconsdir}/hicolor/48x48/apps/%{name}.png
-convert -scale 32 %{name}.png %{buildroot}%{_iconsdir}/hicolor/32x32/apps/%{name}.png
-convert -scale 16 %{name}.png %{buildroot}%{_iconsdir}/hicolor/16x16/apps/%{name}.png
-
-# remove files not bundled
-rm -rf %{buildroot}%{_datadir}/gnome
-
-%find_lang %{name}
+%find_lang %{name} --with-gnome
 
 %files -f %{name}.lang
 %doc AUTHORS ChangeLog COPYING NEWS README* FAQ
-%config(noreplace) %{_sysconfdir}/etherape
-%config(noreplace) %{_sysconfdir}/pam.d/etherape
-%config(noreplace) %{_sysconfdir}/security/console.apps/etherape
-%{_bindir}/*
-%{_sbindir}/*
-%{_mandir}/man1/*
-%{_iconsdir}/hicolor/*/apps/%{name}.png
-%{_datadir}/%{name}
-%{_datadir}/pixmaps/*
-%{_datadir}/applications/*.desktop
-%{_datadir}/omf/%{name}
-
+%config(noreplace) %{_sysconfdir}/pam.d/%{name}
+%config(noreplace) %{_sysconfdir}/security/console.apps/%{name}
+%{_bindir}/%{name}
+%{_sbindir}/%{name}.real
+%{_datadir}/%{name}/
+%{_datadir}/applications/%{name}.desktop
+%{_datadir}/pixmaps/%{name}.png
