@@ -7,6 +7,11 @@ Group:		Monitoring
 URL:		https://etherape.sourceforge.net
 Source0:	https://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	gnome-doc-utils
 BuildRequires:	pkgconfig(libpcap)
 BuildRequires:	pkgconfig(goocanvas-2.0)
